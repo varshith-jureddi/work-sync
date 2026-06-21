@@ -42,7 +42,7 @@ export default function Home() {
     <div className="flex flex-1 flex-col gap-8">
       <section className="space-y-4">
         <Badge variant="secondary" className="w-fit">
-          Next.js 16 + Neon Auth + Neon Postgres
+          Next.js 16 + Postgres
         </Badge>
         <h1 className="text-4xl font-semibold tracking-tight">
           Plan events and track RSVPs fast
@@ -52,13 +52,13 @@ export default function Home() {
           update in real-time with Going, Maybe, and Not going counts.
         </p>
         <div className="flex flex-wrap gap-3">
-          <Button asChild>
+          {/* <Button asChild>
             <Link href="/auth/sign-up">Create account</Link>
           </Button>
           <Button variant="outline" asChild>
             <Link href="/auth/sign-in">Sign in</Link>
-          </Button>
-          <Button variant="ghost" asChild>
+          </Button> */}
+          <Button variant="outline" asChild>
             <Link href="/dashboard">Open dashboard</Link>
           </Button>
         </div>
