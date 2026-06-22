@@ -31,7 +31,7 @@ export default function RootLayout({
       <body className=" flex flex-col bg-background text-foreground min-h-screen">
         <header className="border-b border-(--border) bg-(--surface)/90 backdrop-blur ">
           <div className="flex justify-between p-4 mx-auto w-full items-center">
-            <Link href={"/"} className="text-sm font-semibold tracking-wide">Event MAnager</Link>
+            <Link href={"/"} className="text-sm font-semibold tracking-wide">WorkSync</Link>
             <nav>
               <Link href={"/dashboard"} className="text-sm text-(--muted-foreground)">Dashboard</Link>
             </nav>
