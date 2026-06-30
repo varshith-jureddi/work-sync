@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum RSVPstatus {
+  going
+  maybe
+  not_going
+}
+
+model Event {
+  id          String    @id @default(uuid()) @db.Uuid
+  owner_uid   String
+  title       String
+  description String?
+  location    String?
+  event_date  DateTime? @db.Timestamptz(6)
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime? @default(now()) @db.Timestamptz(6)
+
+  event_invites EventInvite?
+  rsvps         eventRsvp[]
+
+  @@index([owner_uid, created_at(sort: Desc)], map: "idx_events_owner")
+  @@map("events")
+}
+
+model EventInvite {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  eventId   String   @unique @map("event_id") @db.Uuid
+  token     String   @unique
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  events Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  rsvps  eventRsvp[]
+
+  @@map("event_invites")
+}
+
+model eventRsvp {
+  id           String     @id @default(uuid()) @db.Uuid
+  eventId      String     @map("event_id") @db.Uuid
+  inviteId     String?    @map("invite_id") @db.Uuid
+  status       RSVPstatus
+  responded_at DateTime   @default(now()) @db.Timestamptz(6)
+  created_at   DateTime   @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime   @default(now()) @db.Timestamptz(6)
+
+  event  Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  invite EventInvite? @relation(fields: [inviteId], references: [id], onDelete: SetNull)
+
+  @@unique([eventId])
+  @@index([eventId, responded_at(sort: Desc)], map: "idx_rsvp")
+  @@map("event_rsvp")
+}
